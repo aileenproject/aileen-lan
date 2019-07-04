@@ -48,7 +48,7 @@ def check_preconditions():
     Check any preconditions this sensor needs and raise if you're not happy.
     """
     output = subprocess.check_output(["which", "nmap"])
-    if "not found" in output.decode('utf-8'):
+    if "not found" in output.decode("utf-8"):
         logger.error("%s ERROR: nmap seems not to be installed or on the path!" % LBL)
         sys.exit(2)
     logger.debug("%s I am fine with startibng the LAN mapping :)")
@@ -70,11 +70,14 @@ def start_sensing(tmp_path: str = None):
     """
     This starts running the sensor regularly. Aileen calls this once and keeps it alive in a tmux session.
     """
-    interval = int(os.environ.get("AILEEN_LAN_INTERVAL_IN_SECONDS", default=5*60))
+    interval = int(os.environ.get("AILEEN_LAN_INTERVAL_IN_SECONDS", default=5 * 60))
     start_time = time.time()
     while True:
         scan_ips(tmp_path)
-        logger.info("%s Sleeping until %d seconds have passed since last ip scan  ..." % (LBL, interval))
+        logger.info(
+            "%s Sleeping until %d seconds have passed since last ip scan  ..."
+            % (LBL, interval)
+        )
         sleep_until_interval_is_complete(start_time, interval)
 
 
@@ -89,7 +92,7 @@ def scan_ips(tmp_path: str = None):
     output = subprocess.check_output(args)
     logger.debug(f"{LBL} Producing nmap output ...")
     with open("%s/%s" % (tmp_path, TMP_FILE_NAME), "w") as nmap_output:
-        nmap_output.write(output.decode('utf-8'))
+        nmap_output.write(output.decode("utf-8"))
 
 
 def get_latest_reading_as_df(tmp_path: str = None):
@@ -104,7 +107,7 @@ def get_latest_reading_as_df(tmp_path: str = None):
     result = []
     with open("/".join((tmp_path.rstrip("/"), TMP_FILE_NAME)), "r") as nmap_output:
         sensor_output = nmap_output.readlines()
-    
+
     if len(sensor_output) == 0:
         logger.warning("%s WARNING: Got no output from nmap!" % LBL)
         return empty_df
@@ -115,11 +118,15 @@ def get_latest_reading_as_df(tmp_path: str = None):
     for line in sensor_output:
         if line.startswith("Starting Nmap"):
             try:
-                scan_time = dtparser.parse(line.split(" at ")[1]).replace(tzinfo=lan_tzinfo)
+                scan_time = dtparser.parse(line.split(" at ")[1]).replace(
+                    tzinfo=lan_tzinfo
+                )
             except:
                 pass
-    if scan_time is None: 
-        print("%s WARNING: Could not find scan time in output from nmap, using now!" % LBL)
+    if scan_time is None:
+        print(
+            "%s WARNING: Could not find scan time in output from nmap, using now!" % LBL
+        )
         now = datetime.now().replace(tzinfo=lan_tzinfo)
 
     current_ip = None
@@ -130,22 +137,20 @@ def get_latest_reading_as_df(tmp_path: str = None):
             current_ip = line.split("for ")[1].strip()
         elif current_ip is not None:
             if "Host is up" in line:
-                result.append({"observable_id": current_ip,
-                               "time_seen": scan_time,
-                               "value": 1,
-                               "observations": {"source": "nmap"}})
+                result.append(
+                    {
+                        "observable_id": current_ip,
+                        "time_seen": scan_time,
+                        "value": 1,
+                        "observations": {"source": "nmap"},
+                    }
+                )
         else:
             continue
     df = pd.DataFrame(result)
     if df.index.size == 0:
         return empty_df
-    #df = df.set_index("observable_id", drop=True)
-    logger.info(f"{LBL} At {scan_time}, nmap found {df.index.size} connected computers in {get_subnet_mask()}.")
+    logger.info(
+        f"{LBL} At {scan_time}, nmap found {df.index.size} connected computers in {get_subnet_mask()}."
+    )
     return df
-
-
-def adjust_event_value(event_value, last_event_value, observations, observable):
-    """
-    Adjust event data dynamically, if needed.
-    """
-    return event_value
