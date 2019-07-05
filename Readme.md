@@ -8,13 +8,13 @@ scan the local area network (LAN) for IP addresses.
 
 0. Make a virtual env and activate it
 1. Get aileen-core and install its dependencies
-   `git clone git@github.com:aileenproject/aileen-core.git`
-   `cd aileen-core`
-   `python setup.py develop`
-   `python manage.py migrate data box server`
-   `python manage.py fill_settings --server-url blaserver --upload-token "sometoken"`
+   * `git clone git@github.com:aileenproject/aileen-core.git`
+   * `cd aileen-core`
+   * `python setup.py develop`
+   * `python manage.py migrate data box server`
+   * `python manage.py fill_settings --server-url blaserver --upload-token "sometoken"`
 2. Get aileen lan
-   `git clone git@github.com:aileenproject/aileen-lan.git`
+   * `git clone git@github.com:aileenproject/aileen-lan.git`
 3. Make sure aileen-core knows and can find aileen-lan's sensor module
     * `export SENSOR_MODULE=sensor`
     * `export ACTIVATE_VENV_CMD="source activate my-aileen-venv"`
