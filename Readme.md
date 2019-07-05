@@ -16,7 +16,36 @@ scan the local area network (LAN) for IP addresses.
 
 0. Make a virtual env and activate it
 1. Get aileen-core and install its dependencies
-   git clone ... TODO
-   python setup.py develop
-2. Set at least the env variable SENSOR_MODULE
-3. sudo service aileen start
+   `git clone git@github.com:aileenproject/aileen-core.git`
+   `cd aileen-core`
+   `python setup.py develop`
+   `python manage.py migrate data box server`
+   `python manage.py fill_settings --server-url blaserver --upload-token "sometoken"`
+2. Get aileen lan
+   `git clone git@github.com:aileenproject/aileen-lan.git`
+3. Make sure aileen-core knows and can find aileen-lan's sensor module
+    * `export SENSOR_MODULE=sensor`
+    * `export ACTIVATE_VENV_CMD="source activate my-aileen-venv"`
+    * `export PYTHONPATH=/full/path/to/aileen-lan`
+4. Further configuration of aileen-lan
+   You can set/export the following env variables:
+    * AILEEN_LAN_INTERVAL_IN_SECONDS (defaults to 300)
+    * AILEEN_LAN_SUBNET_MASK (defaults to "192.168.1.0/24")
+    * AILEEN_LAN_TIMEZONE (defaults to "UTC")
+5. Start/stop the box:
+  * `cd aileen`
+  * `python manage.py run_box`
+  * `python manage.py stop_box`
+
+Aileen-lan should now start filling the local database.`tmux attach` if you're interested to peek inside.
+
+
+TODO (where we might want to go):
+1. `pip install aileen-core`
+2. `aileen-box-install`
+3. `sudo service aileen start`
+
+
+LATER ON SERVER:
+    TODO
+   `python manage.py create_box --id 7e84fca5-e3d6-4721-a39a-4d1781a23124 --name classsroom --description "Counting connected learning computers"`
