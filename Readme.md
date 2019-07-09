@@ -19,6 +19,7 @@ scan the local area network (LAN) for IP addresses.
     * `export SENSOR_MODULE=sensor`
     * `export ACTIVATE_VENV_CMD="source activate my-aileen-venv"`
     * `export PYTHONPATH=/full/path/to/aileen-lan`
+    * `export INTERNET_CONNECTION_AVAILABLE=no` (if you're in an offline setting, this keeps Aileen from trying to upload)
 4. Further configuration of aileen-lan
    You can set/export the following env variables:
     * AILEEN_LAN_INTERVAL_IN_SECONDS (defaults to 300)
@@ -29,14 +30,15 @@ scan the local area network (LAN) for IP addresses.
   * `python manage.py run_box`
   * `python manage.py stop_box`
 
-Aileen-lan should now start filling the local database.`tmux attach` if you're interested to peek inside.
+Aileen-lan should now start filling the local database.`tmux attach` if you're interested to peek inside if everything is working.
+(Ctrl-b-<tab-index> switches tmux tabs, Ctrl-b-d detaches from the session)
 
 
 ## Troubleshooting
 
-You can test if your aileen-lan sensor is findable and works.
-You should have included the aileen-lan directory in the PYTHONPATH and set the SENSOR_MODULE env variable (see above).
-    
+You can test directly in a python console if your aileen-lan sensor is findable and works.
+You should have included the aileen-lan directory in the PYTHONPATH and set the SENSOR_MODULE env variable (see step 3 above).
+
 Then open a python console and do this:
 
     import importlib
@@ -45,12 +47,8 @@ Then open a python console and do this:
 
 
 
-TODO (where we might want to go):
-1. `pip install aileen-core`
-2. `aileen-box-install`
-3. `sudo service aileen start`
+## Server setup
 
+TODO
 
-LATER ON SERVER:
-    TODO
-   `python manage.py create_box --id 7e84fca5-e3d6-4721-a39a-4d1781a23124 --name classsroom --description "Counting connected learning computers"`
+`python manage.py create_box --id 7e84fca5-e3d6-4721-a39a-4d1781a23124 --name classsroom --description "Counting connected learning computers"`
