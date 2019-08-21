@@ -16,12 +16,12 @@ scan the local area network (LAN) for IP addresses.
 2. Get aileen lan
    * `git clone git@github.com:aileenproject/aileen-lan.git`
 3. Make sure aileen-core knows and can find aileen-lan's sensor module
-    * `export SENSOR_MODULE=sensor`
     * `export ACTIVATE_VENV_CMD="source activate my-aileen-venv"`
-    * `export PYTHONPATH=/full/path/to/aileen-lan`
-    * `export INTERNET_CONNECTION_AVAILABLE=no` (if you're in an offline setting, this keeps Aileen from trying to upload)
+    * `export SENSOR_MODULE=sensor`
+    * `export PYTHONPATH=/full/path/to/aileen-lan` (this really needs to happen on the shell before you run aileen-lan, i.e. not in .env)
 4. Further configuration of aileen-lan
    You can set/export the following env variables:
+    * INTERNET_CONNECTION_AVAILABLE (defaults to "yes" - if you're in an offline setting, this keeps Aileen from trying to upload)
     * AILEEN_LAN_INTERVAL_IN_SECONDS (defaults to 300)
     * AILEEN_LAN_SUBNET_MASK (defaults to "192.168.1.0/24")
     * AILEEN_LAN_TIMEZONE (defaults to "UTC")
