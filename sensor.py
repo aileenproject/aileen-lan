@@ -114,20 +114,19 @@ def get_latest_reading_as_df(tmp_path: str = None):
 
     # get the date from the namp output (usually first or second line)
     scan_time: datetime = None
-    lan_tzinfo = pytz.timezone(os.environ.get("AILEEN_LAN_TIMEZONE", "UTC"))
+    lan_tz = pytz.timezone(os.environ.get("AILEEN_LAN_TIMEZONE", UTC))
     for line in sensor_output:
         if line.startswith("Starting Nmap"):
             try:
-                scan_time = dtparser.parse(line.split(" at ")[1]).replace(
-                    tzinfo=lan_tzinfo
-                )
+                scan_time = dtparser.parse(line.split(" at ")[1]).astimezone(lan_tz)
             except:
                 pass
+            break
     if scan_time is None:
         print(
             "%s WARNING: Could not find scan time in output from nmap, using now!" % LBL
         )
-        now = datetime.now().replace(tzinfo=lan_tzinfo)
+        now = datetime.now().astimezone(lan_tz)
 
     current_ip = None
     for line in sensor_output:
