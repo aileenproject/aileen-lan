@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+import re
 import shlex
 from datetime import datetime
 import pytz
@@ -95,6 +96,17 @@ def scan_ips(tmp_path: str = None):
         nmap_output.write(output.decode("utf-8"))
 
 
+def find_ip(s: str) -> str:
+    """Find the first IP address in the string and return it"""
+    regex = r'(?:\d{1,3}\.)+(?:\d{1,3})'
+    ip_pattern = re.compile(regex)
+    ips = re.findall(ip_pattern, s)
+    if len(ips) > 0:
+        return ips[0]
+    else:
+        return ""
+
+
 def get_latest_reading_as_df(tmp_path: str = None):
     """
     Return the latest reading in the dataframe format required by Aileen-core.
@@ -114,7 +126,7 @@ def get_latest_reading_as_df(tmp_path: str = None):
 
     # get the date from the namp output (usually first or second line)
     scan_time: datetime = None
-    lan_tz = pytz.timezone(os.environ.get("AILEEN_LAN_TIMEZONE", UTC))
+    lan_tz = pytz.timezone(os.environ.get("AILEEN_LAN_TIMEZONE", "UTC"))
     for line in sensor_output:
         if line.startswith("Starting Nmap"):
             try:
@@ -133,7 +145,7 @@ def get_latest_reading_as_df(tmp_path: str = None):
         if not line.startswith("Nmap scan report") and not line.startswith("Host is"):
             continue
         if "scan report for" in line:
-            current_ip = line.split("for ")[1].strip()
+            current_ip = find_ip(line.split("for ")[1].strip())
         elif current_ip is not None:
             if "Host is up" in line:
                 result.append(
