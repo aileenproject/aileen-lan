@@ -16,8 +16,8 @@ Tool to sense all active IP addresses in a network.
 This implements the Aileen-Core API, so data can be collected, aggregated and uploaded.
 
 You can set the following env variables:
+    * AILEEN_LAN_SUBNET_MASK (this one is important, see below for help - it defaults to "192.168.1.0/24")
     * AILEEN_LAN_INTERVAL_IN_SECONDS (defaults to 300)
-    * AILEEN_LAN_SUBNET_MASK (defaults to "192.168.1.0/24")
     * AILEEN_LAN_TIMEZONE (defaults to "UTC")
 
 You can use `ifconfig` or `ip addr show` to find the subnet mask
@@ -28,8 +28,8 @@ As an example, I just ran nmap and it scanned 256 IP addresses. 25 hosts were up
 With a local Aileen Core installation, setting this module as the sensor and starting
 to run would be:
 
-    export SENSOR_MODULE=sensor
-    export ACTIVATE_VENV_CMD="source activate my-eventual-aileen-venv"
+    export AILEEN_SENSOR_MODULE=sensor
+    export AILEEN_ACTIVATE_VENV_CMD="source activate my-eventual-aileen-venv"
     export PYTHONPATH=/path/to/aileen-lan
     python manage.py start_box
 
