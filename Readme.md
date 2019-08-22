@@ -6,30 +6,28 @@ scan the local area network (LAN) for IP addresses.
 
 ## Setup
 
-0. Make a virtual env and activate it
-1. Get aileen-core and install its dependencies
+0. Make a virtual env (we used Python 3.6) and activate it
+1. Get aileen-core and aileen-lan code, and install dependencies
    * `git clone git@github.com:aileenproject/aileen-core.git`
    * `cd aileen-core`
-   * `python setup.py develop`
-   * `cd aileen`
-   * `python manage.py migrate data box server`
-   * `python manage.py fill_settings --server-url dummy.server --upload-token "sometoken"`
-2. Get aileen lan
-   * `cd ..`
    * `git clone git@github.com:aileenproject/aileen-lan.git`
-3. Make sure aileen-core knows and can find aileen-lan's sensor module
+   * `pip install -r aileen-lan/requirements.txt`
+   * `python setup.py develop` 
+   * `cd aileen`
+   * `python manage.py migrate`
+   * `python manage.py fill_settings --server-url dummy.server --upload-token "sometoken"`
+2. Make sure aileen-core knows and can find aileen-lan's sensor module
     * `export AILEEN_ACTIVATE_VENV_CMD="source activate my-aileen-venv"`
     * `export PYTHONPATH=/full/path/to/aileen-lan` (Note: this one really needs to happen on the shell before you run aileen-lan, i.e. not in .env)
     * `export AILEEN_SENSOR_MODULE=sensor`
-4. Further configuration of aileen-lan
+3. Further configuration of aileen-lan
    You can set/export the following env variables:
     * AILEEN_INTERNET_CONNECTION_AVAILABLE (defaults to "yes" - if you're in an offline setting, this keeps Aileen from trying to upload)
     * AILEEN_LAN_INTERVAL_IN_SECONDS (defaults to 300)
     * AILEEN_LAN_SUBNET_MASK (defaults to "192.168.1.0/24")
     * AILEEN_LAN_TIMEZONE (defaults to "UTC")
    See aileen-core/Readme file for more.
-5. Start/stop the box:
-  * `cd aileen`
+4. Start/stop the box:
   * `python manage.py run_box`
   * `python manage.py stop_box`
 
