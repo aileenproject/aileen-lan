@@ -31,7 +31,7 @@ scan the local area network (LAN) for IP addresses.
   * `python manage.py run_box`
   * `python manage.py stop_box`
 
-Aileen-lan should now start filling the local database.`tmux attach` if you're interested to peek inside if everything is working.
+Aileen-lan should now start filling the local database (`aileen-core/aileen/db.sqlite3`). Run `tmux attach` if you're interested to peek inside Aileen's tmux sessions where a few processes should be working.
 (Ctrl-b-<tab-index> switches tmux tabs, Ctrl-b-d detaches from the session)
 
 
