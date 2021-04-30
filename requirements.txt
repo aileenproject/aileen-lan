@@ -33,6 +33,6 @@ PyYAML==5.1.1
 requests==2.22.0
 six==1.12.0
 toml==0.10.0
-urllib3==1.25.3
+urllib3==1.25.8
 virtualenv==16.6.1
 zipp==0.5.1
